@@ -23,7 +23,7 @@ class App extends React.Component {
       headers: { 'Content-Type': 'application/json' },
       body: this.state
   };
-  fetch('https://loangrow-backend.herokuapp.com/registration', requestOptions).then(response => response.json()).then(this.setState({ error: response.code === 200 ? "Submission successful" : "Submission failed" }));
+  fetch('https://loangrow-backend.herokuapp.com/registration', requestOptions).then(response => response.json()).then(response => this.setState({ error: response.code === 200 ? "Submission successful" : "Submission failed" }));
   this.setState({
     name: "",
     address: "",
