@@ -1,7 +1,39 @@
 import React from 'react';
 import './App.css';
 
-function App() {
+class App extends React.Component {
+  constructor()
+  {
+    super();
+    this.state = {
+      name: "",
+      reason: "",
+      phone: "",
+      identity: "",
+      address: ""
+    };
+  }
+
+  handleSubmit = () => {
+    this.setState({phone: parseInt(this.state.phone),
+                   identity: parseInt(this.state.identity)});
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(this.state)
+  };
+  fetch('https://loangrow-backend.herokuapp.com/registration', requestOptions)
+      .then(this.setState({phone: this.state.phone.toString(),
+        identity: this.state.identity.toString()}));
+  }
+
+  handleChange = (event) => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  }
+
+  render()
+  {
   return (
     <div class="wrapper">
     <div class="title">
@@ -10,12 +42,12 @@ function App() {
     <div class="form">
        <div class="inputfield">
           <label>Name</label>
-          <input type="text" class="input"/>
+          <input type="text" class="input"  onChange={this.handleChange}/>
        </div>  
         <div class="inputfield">
           <label>Reason</label>
           <div class="custom_select">
-            <select>
+            <select onChange={this.handleChange}>
               <option value="none">None</option>
               <option value="looking for an internship">Looking for an internship</option>
               <option value="adding a new skill">Adding a new skill</option>
@@ -26,22 +58,23 @@ function App() {
        </div> 
       <div class="inputfield">
           <label>Phone Number</label>
-          <input type="text" class="input"/>
+          <input type="text" class="input"  onChange={this.handleChange}/>
        </div> 
        <div class="inputfield">
           <label>Identity</label>
-          <input type="text" class="input"/>
+          <input type="text" class="input"  onChange={this.handleChange}/>
        </div> 
       <div class="inputfield">
           <label>Address</label>
-          <textarea class="textarea"></textarea>
+          <textarea class="textarea" onChange={this.handleChange}></textarea>
        </div> 
       <div class="inputfield">
-        <input type="submit" value="Submit" class="btn"/>
+        <input type="submit" value="Submit" class="btn" onClick={this.handleSubmit}/>
       </div>
     </div>
 </div>
   );
+}
 }
 
 export default App;
