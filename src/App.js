@@ -10,7 +10,8 @@ class App extends React.Component {
       address: "",
       phone: "",
       identity: "",
-      reason: ""
+      reason: "",
+      error: ""
     };
   }
 
@@ -22,7 +23,7 @@ class App extends React.Component {
       headers: { 'Content-Type': 'application/json' },
       body: this.state
   };
-  fetch('https://loangrow-backend.herokuapp.com/registration', requestOptions);
+  fetch('https://loangrow-backend.herokuapp.com/registration', requestOptions).then(response => response.json()).then(this.setState({ error: response.code === 200 ? "Submission successful" : "Submission failed" }));
   this.setState({
     name: "",
     address: "",
@@ -49,12 +50,12 @@ class App extends React.Component {
     <div class="form">
        <div class="inputfield">
           <label>Name</label>
-          <input type="text" class="input"  onChange={this.handleChange}/>
+          <input name="name" type="text" class="input"  onChange={this.handleChange}/>
        </div>  
         <div class="inputfield">
           <label>Reason</label>
           <div class="custom_select">
-            <select onChange={this.handleChange}>
+            <select name="reason" onChange={this.handleChange}>
               <option value="none">None</option>
               <option value="looking for an internship">Looking for an internship</option>
               <option value="adding a new skill">Adding a new skill</option>
@@ -65,20 +66,21 @@ class App extends React.Component {
        </div> 
       <div class="inputfield">
           <label>Phone Number</label>
-          <input type="text" class="input"  onChange={this.handleChange}/>
+          <input name="phone" type="text" class="input"  onChange={this.handleChange}/>
        </div> 
        <div class="inputfield">
           <label>Identity</label>
-          <input type="text" class="input"  onChange={this.handleChange}/>
+          <input name="identity" type="text" class="input"  onChange={this.handleChange}/>
        </div> 
       <div class="inputfield">
           <label>Address</label>
-          <textarea class="textarea" onChange={this.handleChange}></textarea>
+          <textarea name="address" class="textarea" onChange={this.handleChange}></textarea>
        </div> 
       <div class="inputfield">
         <input type="submit" value="Submit" class="btn" onClick={this.handleSubmit}/>
       </div>
     </div>
+  {this.state.error === "Submission successful" ? <div style="color: green;">{this.state.error}</div>:this.state.error === "Submission failed"?<div style="color: red;">{this.state.error}</div>:null}
 </div>
   );
 }
