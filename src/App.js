@@ -7,10 +7,10 @@ class App extends React.Component {
     super();
     this.state = {
       name: "",
-      reason: "",
+      address: "",
       phone: "",
       identity: "",
-      address: ""
+      reason: ""
     };
   }
 
@@ -25,10 +25,10 @@ class App extends React.Component {
   fetch('https://loangrow-backend.herokuapp.com/registration', requestOptions);
   this.setState({
     name: "",
-    reason: "",
+    address: "",
     phone: "",
     identity: "",
-    address: ""
+    reason: ""
   });
   }
 
