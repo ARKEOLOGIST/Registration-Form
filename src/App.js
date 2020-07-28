@@ -23,8 +23,13 @@ class App extends React.Component {
       body: JSON.stringify(this.state)
   };
   fetch('https://loangrow-backend.herokuapp.com/registration', requestOptions)
-      .then(this.setState({phone: this.state.phone.toString(),
-        identity: this.state.identity.toString()}));
+      .then(this.setState({
+      name: "",
+      reason: "",
+      phone: "",
+      identity: "",
+      address: ""
+    }));
   }
 
   handleChange = (event) => {
