@@ -10,20 +10,20 @@ class App extends React.Component {
       address: "",
       phone: "",
       identity: "",
-      reason: "",
-      error: ""
+      reason: ""
     };
   }
 
   handleSubmit = () => {
     this.setState({phone: parseInt(this.state.phone),
                    identity: parseInt(this.state.identity)});
+    console.log(this.state);
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: this.state
   };
-  fetch('https://loangrow-backend.herokuapp.com/registration', requestOptions).then(response => response.json()).then(response => this.setState({ error: response.code === 200 ? "Submission successful" : "Submission failed" }));
+  fetch('https://loangrow-backend.herokuapp.com/registration', requestOptions);
   this.setState({
     name: "",
     address: "",
@@ -36,8 +36,6 @@ class App extends React.Component {
   handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
-    console.log(name);
-    console.log(value);
   }
 
   render()
@@ -80,7 +78,6 @@ class App extends React.Component {
         <input type="submit" value="Submit" class="btn" onClick={this.handleSubmit}/>
       </div>
     </div>
-  {this.state.error === "Submission successful" ? <div style="color: green;">{this.state.error}</div>:this.state.error === "Submission failed"?<div style="color: red;">{this.state.error}</div>:null}
 </div>
   );
 }
