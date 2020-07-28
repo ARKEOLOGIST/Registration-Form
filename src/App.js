@@ -20,16 +20,16 @@ class App extends React.Component {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(this.state)
+      body: this.state
   };
-  fetch('https://loangrow-backend.herokuapp.com/registration', requestOptions)
-      .then(this.setState({
-      name: "",
-      reason: "",
-      phone: "",
-      identity: "",
-      address: ""
-    }));
+  fetch('https://loangrow-backend.herokuapp.com/registration', requestOptions);
+  this.setState({
+    name: "",
+    reason: "",
+    phone: "",
+    identity: "",
+    address: ""
+  });
   }
 
   handleChange = (event) => {
