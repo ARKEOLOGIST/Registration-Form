@@ -10,26 +10,31 @@ class App extends React.Component {
       address: "",
       phone: "",
       identity: "",
-      reason: ""
+      reason: "none",
+      error: "",
     };
   }
 
   handleSubmit = () => {
-    this.setState({phone: parseInt(this.state.phone),
-                   identity: parseInt(this.state.identity)});
-    console.log(this.state);
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: this.state
+      body: JSON.stringify({
+        name: this.state.name,
+        address: this.state.address,
+        phone_number: parseInt(this.state.phone),
+        identity: parseInt(this.state.identity),
+        reason: this.state.reason
+      })
   };
-  fetch('https://loangrow-backend.herokuapp.com/registration', requestOptions);
+  fetch('https://loangrow-backend.herokuapp.com/registration', requestOptions).then(res => res.json())
+  .then(data => {if (data.hasOwnProperty('message')) {this.setState({error: "Submission failed"})} else {this.setState({error: "Submission successful"})}});
   this.setState({
     name: "",
     address: "",
     phone: "",
     identity: "",
-    reason: ""
+    reason: "none"
   });
   }
 
@@ -41,19 +46,19 @@ class App extends React.Component {
   render()
   {
   return (
-    <div class="wrapper">
-    <div class="title">
+    <div className="wrapper">
+    <div className="title">
       Registration Form
     </div>
-    <div class="form">
-       <div class="inputfield">
+    <div className="form">
+       <div className="inputfield">
           <label>Name</label>
-          <input name="name" type="text" class="input"  onChange={this.handleChange}/>
+          <input name="name" value={this.state.name} type="text" className="input"  onChange={this.handleChange}/>
        </div>  
-        <div class="inputfield">
+        <div className="inputfield">
           <label>Reason</label>
-          <div class="custom_select">
-            <select name="reason" onChange={this.handleChange}>
+          <div className="custom_select">
+            <select value={this.state.reason} name="reason" onChange={this.handleChange}>
               <option value="none">None</option>
               <option value="looking for an internship">Looking for an internship</option>
               <option value="adding a new skill">Adding a new skill</option>
@@ -62,22 +67,23 @@ class App extends React.Component {
             </select>
           </div>
        </div> 
-      <div class="inputfield">
+      <div className="inputfield">
           <label>Phone Number</label>
-          <input name="phone" type="text" class="input"  onChange={this.handleChange}/>
+          <input name="phone" value={this.state.phone} type="text" className="input"  onChange={this.handleChange}/>
        </div> 
-       <div class="inputfield">
+       <div className="inputfield">
           <label>Identity</label>
-          <input name="identity" type="text" class="input"  onChange={this.handleChange}/>
+          <input name="identity" value={this.state.identity} type="text" className="input"  onChange={this.handleChange}/>
        </div> 
-      <div class="inputfield">
+      <div className="inputfield">
           <label>Address</label>
-          <textarea name="address" class="textarea" onChange={this.handleChange}></textarea>
+          <textarea name="address" value={this.state.address} className="textarea" onChange={this.handleChange}></textarea>
        </div> 
-      <div class="inputfield">
-        <input type="submit" value="Submit" class="btn" onClick={this.handleSubmit}/>
+      <div className="inputfield">
+        <input type="submit" value="Submit" className="btn" onClick={this.handleSubmit}/>
       </div>
     </div>
+    {this.state.error==="Submission failed"?<div style={{color: "red"}}>Submission failed!</div>:this.state.error==="Submission successful"?<div style={{color: "green"}}>Submission successful</div>:null}
 </div>
   );
 }
